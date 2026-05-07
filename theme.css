@@ -118,39 +118,13 @@ pre {
   height: 100vh;
 }
 
-.brand {
+.search {
+  height: var(--topbar-h);
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 18px 18px 14px;
+  padding: 0 12px;
   border-bottom: 1px solid var(--border-soft);
-}
-
-.brand-mark {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, var(--accent), #9b6bff);
-  color: #0b0d10;
-  font-weight: 700;
-  display: grid;
-  place-items: center;
-  font-size: 16px;
-}
-
-.brand-title {
-  font-weight: 600;
-  letter-spacing: 0.2px;
-}
-
-.brand-subtitle {
-  color: var(--text-muted);
-  font-size: 12px;
-}
-
-.search {
-  padding: 12px;
-  border-bottom: 1px solid var(--border-soft);
+  box-sizing: border-box;
 }
 
 .search input {
