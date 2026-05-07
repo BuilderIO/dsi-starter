@@ -9,10 +9,8 @@ const framesEl = document.getElementById("frames");
 const emptyEl = document.getElementById("empty");
 const titleEl = document.getElementById("current-title");
 const pathEl = document.getElementById("current-path");
-const openNew = document.getElementById("open-new");
 const countEl = document.getElementById("count");
 const searchEl = document.getElementById("search");
-const refreshEl = document.getElementById("refresh");
 const themeToggle = document.getElementById("theme-toggle");
 
 const THEME_KEY = "dsi-preview-theme";
@@ -125,7 +123,6 @@ function paintStage() {
   framesEl.hidden = false;
   titleEl.textContent = it.title;
   pathEl.textContent = it.file;
-  openNew.href = previewUrl(it.file);
 
   framesEl.innerHTML = "";
   const wrap = document.createElement("div");
@@ -150,7 +147,6 @@ function escapeHtml(s) {
 }
 
 searchEl.addEventListener("input", render);
-refreshEl.addEventListener("click", loadManifest);
 
 themeToggle.addEventListener("click", () => {
   const next = THEME_ORDER[(THEME_ORDER.indexOf(currentTheme()) + 1) % THEME_ORDER.length];
