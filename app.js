@@ -13,7 +13,6 @@ const openNew = document.getElementById("open-new");
 const countEl = document.getElementById("count");
 const searchEl = document.getElementById("search");
 const refreshEl = document.getElementById("refresh");
-const viewportBtns = document.querySelectorAll(".viewport-toggle button");
 const themeToggle = document.getElementById("theme-toggle");
 
 const THEME_KEY = "dsi-preview-theme";
@@ -35,7 +34,6 @@ applyTheme(currentTheme());
 
 let items = [];
 let activeFile = null;
-let viewport = "full";
 
 function prettify(file) {
   const base = file.replace(/\.html?$/i, "").replace(/[-_/]+/g, " ");
@@ -132,7 +130,6 @@ function paintStage() {
   framesEl.innerHTML = "";
   const wrap = document.createElement("div");
   wrap.className = "frame-wrap";
-  wrap.dataset.viewport = viewport;
   const iframe = document.createElement("iframe");
   iframe.src = previewUrl(it.file);
   iframe.title = it.title;
@@ -151,15 +148,6 @@ function escapeHtml(s) {
     (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
   );
 }
-
-viewportBtns.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    viewport = btn.dataset.viewport;
-    viewportBtns.forEach((b) => b.classList.toggle("active", b === btn));
-    const wrap = framesEl.querySelector(".frame-wrap");
-    if (wrap) wrap.dataset.viewport = viewport;
-  });
-});
 
 searchEl.addEventListener("input", render);
 refreshEl.addEventListener("click", loadManifest);

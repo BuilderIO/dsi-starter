@@ -319,35 +319,6 @@ pre {
   gap: 10px;
 }
 
-.viewport-toggle {
-  display: inline-flex;
-  background: var(--bg-elev-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 2px;
-}
-
-.viewport-toggle button {
-  background: transparent;
-  border: 0;
-  color: var(--text-muted);
-  font: inherit;
-  font-size: 12px;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background var(--t-fast), color var(--t-fast);
-}
-
-.viewport-toggle button:hover {
-  color: var(--text);
-}
-
-.viewport-toggle button.active {
-  background: var(--accent-soft);
-  color: var(--text);
-}
-
 /* ---------- Stage ---------- */
 .stage {
   flex: 1;
@@ -374,19 +345,6 @@ pre {
   max-width: 100%;
 }
 
-.frame-wrap[data-viewport="mobile"] {
-  max-width: 375px;
-}
-.frame-wrap[data-viewport="tablet"] {
-  max-width: 768px;
-}
-.frame-wrap[data-viewport="desktop"] {
-  max-width: 1280px;
-}
-.frame-wrap[data-viewport="full"] {
-  max-width: 100%;
-}
-
 .frame-wrap iframe {
   display: block;
   width: 100%;
@@ -396,6 +354,10 @@ pre {
 }
 
 /* ---------- Empty state ---------- */
+[hidden] {
+  display: none !important;
+}
+
 .empty {
   display: grid;
   place-items: center;
