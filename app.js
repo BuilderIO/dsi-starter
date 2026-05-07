@@ -14,6 +14,24 @@ const countEl = document.getElementById("count");
 const searchEl = document.getElementById("search");
 const refreshEl = document.getElementById("refresh");
 const viewportBtns = document.querySelectorAll(".viewport-toggle button");
+const themeToggle = document.getElementById("theme-toggle");
+
+const THEME_KEY = "dsi-preview-theme";
+const THEME_ORDER = ["auto", "light", "dark"];
+
+function applyTheme(mode) {
+  if (mode === "auto") {
+    document.documentElement.removeAttribute("data-theme");
+  } else {
+    document.documentElement.setAttribute("data-theme", mode);
+  }
+}
+
+function currentTheme() {
+  return localStorage.getItem(THEME_KEY) || "auto";
+}
+
+applyTheme(currentTheme());
 
 let items = [];
 let activeFile = null;
@@ -145,6 +163,12 @@ viewportBtns.forEach((btn) => {
 
 searchEl.addEventListener("input", render);
 refreshEl.addEventListener("click", loadManifest);
+
+themeToggle.addEventListener("click", () => {
+  const next = THEME_ORDER[(THEME_ORDER.indexOf(currentTheme()) + 1) % THEME_ORDER.length];
+  localStorage.setItem(THEME_KEY, next);
+  applyTheme(next);
+});
 
 window.addEventListener("hashchange", () => {
   const f = decodeURIComponent(location.hash.slice(1));

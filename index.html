@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>DSI Lite — Preview</title>
     <link rel="stylesheet" href="./theme.css" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("dsi-preview-theme");
+        if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
   </head>
   <body>
     <aside class="sidebar">
@@ -41,6 +47,11 @@
             <button data-viewport="desktop" type="button" title="Desktop">1280</button>
             <button data-viewport="full"    type="button" class="active" title="Full width">Full</button>
           </div>
+          <button id="theme-toggle" class="btn-ghost" type="button" title="Toggle theme" aria-label="Toggle theme">
+            <span data-theme-icon="light">☀</span>
+            <span data-theme-icon="dark">☾</span>
+            <span data-theme-icon="auto">◐</span>
+          </button>
           <a id="open-new" class="btn-ghost" href="#" target="_blank" rel="noopener">Open ↗</a>
         </div>
       </header>
