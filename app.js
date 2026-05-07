@@ -97,7 +97,7 @@ function render() {
   if (items.length === 0) {
     emptyEl.hidden = false;
     framesEl.hidden = true;
-    titleEl.textContent = "No previews";
+    titleEl.textContent = "Waiting for Builder…";
     pathEl.textContent = "";
     return;
   }

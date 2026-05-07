@@ -415,6 +415,22 @@ pre {
   font-size: 16px;
 }
 
+.empty-spinner {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  margin: 0 0 14px;
+  animation: spin 900ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .empty-card p {
   margin: 0 0 12px;
   color: var(--text-muted);
