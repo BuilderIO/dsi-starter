@@ -1,14 +1,66 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hello world project</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DSI Lite — Preview</title>
+    <link rel="stylesheet" href="./theme.css" />
   </head>
-
   <body>
-    <div id="root"></div>
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">D</div>
+        <div class="brand-text">
+          <div class="brand-title">DSI Lite</div>
+          <div class="brand-subtitle">Preview</div>
+        </div>
+      </div>
 
-    <script type="module" src="/client/App.tsx"></script>
+      <div class="search">
+        <input id="search" type="search" placeholder="Filter previews…" autocomplete="off" />
+      </div>
+
+      <nav id="nav" class="nav" aria-label="Previews"></nav>
+
+      <div class="sidebar-footer">
+        <button id="refresh" class="btn-ghost" type="button" title="Reload manifest">Reload</button>
+        <span id="count" class="count"></span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 id="current-title">Select a preview</h1>
+          <code id="current-path" class="path"></code>
+        </div>
+        <div class="topbar-right">
+          <div class="viewport-toggle" role="tablist" aria-label="Viewport">
+            <button data-viewport="mobile"  type="button" title="Mobile">375</button>
+            <button data-viewport="tablet"  type="button" title="Tablet">768</button>
+            <button data-viewport="desktop" type="button" title="Desktop">1280</button>
+            <button data-viewport="full"    type="button" class="active" title="Full width">Full</button>
+          </div>
+          <a id="open-new" class="btn-ghost" href="#" target="_blank" rel="noopener">Open ↗</a>
+        </div>
+      </header>
+
+      <section id="stage" class="stage">
+        <div id="empty" class="empty">
+          <div class="empty-card">
+            <h2>No previews yet</h2>
+            <p>
+              Drop <code>.html</code> files into <code>.builder/output/</code> and run the
+              generator to refresh the manifest:
+            </p>
+            <pre><code>node build-manifest.mjs</code></pre>
+          </div>
+        </div>
+
+        <div id="frames" class="frames" hidden></div>
+      </section>
+    </main>
+
+    <script src="./app.js" type="module"></script>
   </body>
 </html>
