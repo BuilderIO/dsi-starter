@@ -174,6 +174,23 @@ pre {
   box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
+.search input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><path d='M4 4l6 6M10 4l-6 6' stroke='black' stroke-width='2' stroke-linecap='round'/></svg>") center / 10px 10px no-repeat;
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><path d='M4 4l6 6M10 4l-6 6' stroke='black' stroke-width='2' stroke-linecap='round'/></svg>") center / 10px 10px no-repeat;
+  cursor: pointer;
+  transition: background var(--t-fast);
+}
+
+.search input::-webkit-search-cancel-button:hover {
+  background: var(--text);
+}
+
 .nav {
   flex: 1;
   overflow-y: auto;
@@ -306,7 +323,7 @@ pre {
 }
 
 .path {
-  color: var(--text-faint);
+  color: var(--text-muted);
   font-size: 12px;
   white-space: nowrap;
   overflow: hidden;
