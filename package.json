@@ -4,6 +4,6 @@
   "type": "module",
   "scripts": {
     "manifest": "node build-manifest.mjs",
-    "dev": "npm run manifest && npx --yes serve -l 1234 ."
+    "dev": "npm run manifest && npx --yes serve -l 5173 ."
   }
 }
