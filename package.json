@@ -4,6 +4,8 @@
   "type": "module",
   "scripts": {
     "manifest": "node build-manifest.mjs",
-    "dev": "npm run manifest && npx --yes serve -l 5173 ."
+    "manifest:watch": "npx --yes chokidar-cli \".builder/output/**/*\" -c \"node build-manifest.mjs\" --initial --debounce 500 --throttle 1000",
+    "serve": "npx --yes serve -l 5173 .",
+    "dev": "npm run manifest && npx --yes concurrently -k -n manifest,serve -c blue,green \"npm:manifest:watch\" \"npm:serve\""
   }
 }
