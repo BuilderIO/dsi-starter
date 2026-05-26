@@ -327,13 +327,13 @@ pre {
 
 .frame-wrap {
   width: 100%;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--shadow-frame);
-  transition: max-width var(--t-med);
   max-width: 100%;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  transition: max-width var(--t-med);
 }
 
 .frame-wrap iframe {
@@ -341,7 +341,9 @@ pre {
   width: 100%;
   height: calc(100vh - var(--topbar-h) - 40px);
   border: 0;
-  background: #fff;
+  background: none;
+  overflow: scroll;
+  overscroll-behavior: auto;
 }
 
 /* ---------- Empty state ---------- */
