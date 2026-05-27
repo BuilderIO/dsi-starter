@@ -17,6 +17,17 @@ build-manifest.mjs   # scans .builder/output/ and rewrites manifest.json
 ## Workflow
 
 - Add or update files in `.builder/output/`.
+- Include sidecar metadata comments at the top of each HTML file so the manifest
+  builder can group and label them. Example:
+
+  ```html
+  <!-- @group Tokens -->
+  <!-- @title Color Palette -->
+  <!-- @order 10 -->
+  ```
+
+  `@group` and `@title` are strings; `@order` is a number controlling sort
+  position within a group (lower first). All three are optional.
 - Run `npm run manifest` to regenerate `manifest.json`.
 - Serve the root with any static server (`npm run dev` uses `serve` on :8080).
 
@@ -33,7 +44,12 @@ build-manifest.mjs   # scans .builder/output/ and rewrites manifest.json
 ```
 
 `title` and `group` are optional; `title` defaults to a prettified filename and
-`group` defaults to `"Previews"`.
+`group` defaults to `"Previews"`. Values from `@title` / `@group` sidecar
+comments inside the HTML take precedence over these.
+
+An optional top-level `"groups": ["Tokens", "Components"]` array controls the
+sidebar ordering of groups; any group discovered in sidecars or items that
+isn't listed there is appended after.
 
 ## Constraints
 
