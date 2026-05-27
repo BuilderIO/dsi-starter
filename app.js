@@ -2,11 +2,8 @@
 //
 // HTML previews live in ./.builder/output/. The manifest at ./manifest.json lists them as
 // either a flat array (e.g. ["buttons.html", "colors.html"]) or:
-//   {
-//     "groups": ["Tokens", "Components"],
-//     "items": [{ "file": "buttons.html", "title": "Buttons", "group": "Components" }, ...]
-//   }
-// `groups` is optional and controls the sidebar ordering of custom groups.
+//   { "items": [{ "file": "buttons.html", "title": "Buttons", "group": "Components" }, ...] }
+// Groups and items are rendered in alphabetical order.
 
 const navEl = document.getElementById("nav");
 const framesEl = document.getElementById("frames");
@@ -35,7 +32,6 @@ function currentTheme() {
 applyTheme(currentTheme());
 
 let items = [];
-let groupOrder = [];
 let activeFile = null;
 
 function prettify(file) {
@@ -49,9 +45,6 @@ async function loadManifest() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const raw = Array.isArray(data) ? data : Array.isArray(data.items) ? data.items : [];
-    groupOrder = Array.isArray(data?.groups)
-      ? data.groups.filter((g) => typeof g === "string")
-      : [];
     items = raw
       .map((it) => (typeof it === "string" ? { file: it } : it))
       .filter((it) => it && typeof it.file === "string")
@@ -62,7 +55,6 @@ async function loadManifest() {
       }));
   } catch {
     items = [];
-    groupOrder = [];
   }
   render();
 }
@@ -77,18 +69,20 @@ function render() {
       )
     : items;
 
-  const groups = new Map();
-  for (const name of groupOrder) groups.set(name, []);
+  const collator = new Intl.Collator(undefined, { sensitivity: "base", numeric: true });
+  const grouped = new Map();
   for (const it of filtered) {
-    if (!groups.has(it.group)) groups.set(it.group, []);
-    groups.get(it.group).push(it);
+    if (!grouped.has(it.group)) grouped.set(it.group, []);
+    grouped.get(it.group).push(it);
   }
-  for (const [name, list] of groups) {
-    if (list.length === 0) groups.delete(name);
+  const sortedGroups = [...grouped.keys()].sort((a, b) => collator.compare(a, b));
+  for (const name of sortedGroups) {
+    grouped.get(name).sort((a, b) => collator.compare(a.title, b.title));
   }
 
   navEl.innerHTML = "";
-  for (const [group, list] of groups) {
+  for (const group of sortedGroups) {
+    const list = grouped.get(group);
     const header = document.createElement("div");
     header.className = "nav-group";
     header.textContent = group;

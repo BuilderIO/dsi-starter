@@ -4,9 +4,8 @@
 // Each HTML file may declare its own metadata via sidecar comments near the top:
 //   <!-- @group Tokens -->
 //   <!-- @title Color Palette -->
-//   <!-- @order 10 -->
 // Sidecar values win. Any custom title/group set in an existing manifest.json is preserved
-// as a fallback when no sidecar is present.
+// as a fallback when no sidecar is present. Groups and items are emitted in alphabetical order.
 //
 // Usage: node build-manifest.mjs
 import { readdir, readFile, writeFile, mkdir } from "node:fs/promises";
@@ -33,18 +32,12 @@ async function readSidecar(file) {
     const raw = await readFile(join(outputDir, file), "utf8");
     const head = raw.slice(0, SIDECAR_SCAN_BYTES);
     const meta = {};
-    const re = /<!--\s*@(group|title|order)\s+([\s\S]*?)\s*-->/gi;
+    const re = /<!--\s*@(group|title)\s+([\s\S]*?)\s*-->/gi;
     let m;
     while ((m = re.exec(head))) {
       const key = m[1].toLowerCase();
       const value = m[2].trim();
-      if (!value) continue;
-      if (key === "order") {
-        const n = Number(value);
-        if (Number.isFinite(n)) meta.order = n;
-      } else {
-        meta[key] = value;
-      }
+      if (value) meta[key] = value;
     }
     return meta;
   } catch {
@@ -65,14 +58,13 @@ async function readExistingManifest() {
         byFile.set(it.file, { title: it.title, group: it.group });
       }
     }
-    return {
-      byFile,
-      groups: Array.isArray(data?.groups) ? data.groups.filter((g) => typeof g === "string") : null,
-    };
+    return { byFile };
   } catch {
-    return { byFile: new Map(), groups: null };
+    return { byFile: new Map() };
   }
 }
+
+const collator = new Intl.Collator(undefined, { sensitivity: "base", numeric: true });
 
 await mkdir(outputDir, { recursive: true });
 
@@ -91,42 +83,22 @@ const sidecars = await Promise.all(files.map(readSidecar));
 const items = files.map((file, i) => {
   const sidecar = sidecars[i];
   const prev = existing.byFile.get(file) || {};
-  const item = {
+  return {
     file,
     title: sidecar.title || prev.title || prettify(file),
     group: sidecar.group || prev.group || DEFAULT_GROUP,
   };
-  if (typeof sidecar.order === "number") item.order = sidecar.order;
-  return item;
 });
 
-const discoveredGroups = [];
-const seen = new Set();
-for (const it of items) {
-  if (!seen.has(it.group)) {
-    seen.add(it.group);
-    discoveredGroups.push(it.group);
-  }
-}
+const groups = [...new Set(items.map((it) => it.group))].sort((a, b) => collator.compare(a, b));
 
-const manualGroups = existing.groups && existing.groups.length ? existing.groups : [];
-const mergedGroups = [...manualGroups];
-for (const g of discoveredGroups) {
-  if (!mergedGroups.includes(g)) mergedGroups.push(g);
-}
-
-const groupIndex = new Map(mergedGroups.map((g, i) => [g, i]));
 items.sort((a, b) => {
-  const ga = groupIndex.get(a.group) ?? Number.MAX_SAFE_INTEGER;
-  const gb = groupIndex.get(b.group) ?? Number.MAX_SAFE_INTEGER;
-  if (ga !== gb) return ga - gb;
-  const oa = typeof a.order === "number" ? a.order : Number.MAX_SAFE_INTEGER;
-  const ob = typeof b.order === "number" ? b.order : Number.MAX_SAFE_INTEGER;
-  if (oa !== ob) return oa - ob;
-  return a.file.localeCompare(b.file);
+  const g = collator.compare(a.group, b.group);
+  if (g !== 0) return g;
+  return collator.compare(a.title, b.title);
 });
 
-const output = mergedGroups.length ? { groups: mergedGroups, items } : { items };
+const output = { groups, items };
 
 await writeFile(manifestPath, JSON.stringify(output, null, 2) + "\n");
 console.log(
