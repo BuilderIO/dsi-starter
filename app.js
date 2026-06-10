@@ -65,7 +65,10 @@ function render() {
   const q = searchEl.value.trim().toLowerCase();
   const filtered = q
     ? items.filter(
-        (it) => it.title.toLowerCase().includes(q) || it.file.toLowerCase().includes(q),
+        (it) =>
+          it.title.toLowerCase().includes(q) ||
+          it.file.toLowerCase().includes(q) ||
+          it.group.toLowerCase().includes(q),
       )
     : items;
 
