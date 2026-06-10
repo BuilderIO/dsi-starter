@@ -78,7 +78,12 @@ function render() {
     if (!grouped.has(it.group)) grouped.set(it.group, []);
     grouped.get(it.group).push(it);
   }
-  const sortedGroups = [...grouped.keys()].sort((a, b) => collator.compare(a, b));
+  const sortedGroups = [...grouped.keys()].sort((a, b) => {
+    const aTokens = a.toLowerCase() === "tokens";
+    const bTokens = b.toLowerCase() === "tokens";
+    if (aTokens !== bTokens) return aTokens ? -1 : 1;
+    return collator.compare(a, b);
+  });
   for (const name of sortedGroups) {
     grouped.get(name).sort((a, b) => collator.compare(a.title, b.title));
   }
