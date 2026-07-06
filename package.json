@@ -4,9 +4,9 @@
   "type": "module",
   "scripts": {
     "manifest": "node build-manifest.mjs",
-    "manifest:watch": "npx --yes chokidar-cli \".builder/output/**/*\" -c \"node build-manifest.mjs\" --initial --debounce 500 --throttle 1000",
-    "serve": "npx --yes serve -l 8080 .",
-    "dev": "npm run manifest && npx --yes concurrently -k -n manifest,serve -c blue,green \"npm:manifest:watch\" \"npm:serve\""
+    "manifest:watch": "chokidar-cli \".builder/output/**/*\" -c \"node build-manifest.mjs\" --initial --debounce 500 --throttle 1000",
+    "serve": "serve -l 8080 .",
+    "dev": "npm run manifest && concurrently -k -n manifest,serve -c blue,green \"npm:manifest:watch\" \"npm:serve\""
   },
   "dependencies": {
     "chokidar-cli": "^3.0.0",
