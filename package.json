@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "manifest": "node build-manifest.mjs",
-    "manifest:watch": "chokidar-cli \".builder/output/**/*\" -c \"node build-manifest.mjs\" --initial --debounce 500 --throttle 1000",
+    "manifest:watch": "chokidar \".builder/output/**/*\" -c \"node build-manifest.mjs\" --initial --debounce 500 --throttle 1000",
     "serve": "serve -l 8080 .",
     "dev": "npm run manifest && concurrently -k -n manifest,serve -c blue,green \"npm:manifest:watch\" \"npm:serve\""
   },
