@@ -114,7 +114,10 @@ function render() {
   }
 
   if (!activeFile || !items.find((it) => it.file === activeFile)) {
-    select(items[0].file);
+    const colors = items.find(
+      (it) => it.group.trim().toLowerCase() === "tokens" && it.title.trim().toLowerCase() === "colors",
+    );
+    select((colors || items[0]).file);
   } else {
     paintStage();
   }
