@@ -3,3 +3,8 @@ node_modules
 *.log
 .vscode
 .idea
+
+# Env files hold secrets (e.g. BUILDER_PRIVATE_KEY); never commit them
+.env
+.env.*
+!.env.example
